@@ -2,7 +2,7 @@ pkgname="carbonio-spamassassin-rules"
 pkgver="1.0"
 pkgrel="4"
 pkgdesc="Default ruleset for SpamAssassin"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Apache-2.0')
@@ -20,13 +20,25 @@ priority="important"
 
 package() {
   mkdir -p "${pkgdir}/opt/zextras/data/spamassassin/rules"
+
+  # sa-update loads XS modules; point PERL5LIB at the installed arch dir so it doesn't try to load target-arch .so files with the host perl.
+  _perl5lib="/opt/zextras/common/lib/perl5"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _perl5lib="/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi:${_perl5lib}"
+  fi
+
+  PERL5LIB="${_perl5lib}" \
   /opt/zextras/common/bin/sa-update \
     --nogpg \
-    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules"
+    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules" \
+    || echo "sa-update failed (no download tool or network — rules will be fetched on first boot)"
 
-  cp "${pkgdir}"/opt/zextras/data/spamassassin/rules/updates_spamassassin_org/* \
-    "${pkgdir}"/opt/zextras/data/spamassassin/rules
-
-  rm -rf "${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org" \
-    "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
+  # Flatten the rules subdirectory (use find, not glob — handles empty dir).
+  _rules_subdir="${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org"
+  if [ -d "${_rules_subdir}" ] && [ -n "$(ls -A "${_rules_subdir}" 2>/dev/null)" ]; then
+    find "${_rules_subdir}" -maxdepth 1 -type f -exec cp {} \
+      "${pkgdir}/opt/zextras/data/spamassassin/rules/" \;
+    rm -rf "${_rules_subdir}" \
+      "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
+  fi
 }

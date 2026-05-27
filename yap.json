@@ -3,6 +3,7 @@
   "description": "This is the manifest to build perl third-party packages",
   "buildDir": "/tmp/",
   "output": "artifacts",
+  "skipDeps": ["carbonio-core"],
   "projects": [
     {
       "name": "crypt-openssl-random",

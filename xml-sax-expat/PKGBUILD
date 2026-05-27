@@ -2,7 +2,7 @@ pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
 pkgrel="3"
 pkgdesc="SAX2 Driver for Expat"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -36,15 +36,27 @@ sha256sums=('4c016213d0ce7db2c494e30086b59917b302db8c292dcd21f39deebd9780c83f')
 
 build() {
   cd "${srcdir}/XML-SAX-Expat-${pkgver}"
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
-    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3
-  make
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+
+  _jobs=$(($(nproc) / 2)); [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
 }
 
 package() {
   cd "${srcdir}/XML-SAX-Expat-${pkgver}"
-  PERL5LIB=/opt/zextras/common/lib/perl5:${pkgdir}/opt/zextras/common/lib/perl5 \
-    make install DESTDIR="${pkgdir}"
+  make pure_install DESTDIR="${pkgdir}"
+
+  # Register XML::SAX::Expat (pure_install skips upstream's install_sax_expat hook).
+  _sax_ini="${pkgdir}/opt/zextras/common/lib/perl5/XML/SAX/ParserDetails.ini"
+  mkdir -p "$(dirname "${_sax_ini}")"
+  {
+    printf '[XML::SAX::Expat]\n'
+    printf 'http://xml.org/sax/features/namespaces = 1\n'
+  } >> "${_sax_ini}"
+
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }
