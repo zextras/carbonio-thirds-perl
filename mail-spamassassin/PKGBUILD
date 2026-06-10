@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Spam detector and markup engine"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
