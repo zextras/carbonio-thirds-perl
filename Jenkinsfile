@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@v2.11.0',
+    identifier: 'jenkins-lib-common@v2.11.3',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
