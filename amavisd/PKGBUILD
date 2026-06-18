@@ -64,8 +64,8 @@ source=(
 )
 sha256sums=(
   '6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
-  'eac373c18bcc5ca52149fbafcacb9f536023a8d312ee195145dccd7314fa2958'
-  '41c6e0dc95406fa3facf6db47e3d2f36b482c40c552f58b934e5b30f44787a95'
+  '1d5f61131268faa7969d133c5f7f5ed1eab40fc3a011fc41aa588a7c62965032'
+  '4e000155ca289b70d2b45e4e1bcd13ddd768350d645f11c4d56791fde4ff2867'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
   '8466a63fcf6d1b6a52db0a2e2c22efdd23610615a1ae9d6c5eed00ee0a1e917b'
   '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b'
@@ -105,11 +105,11 @@ _package_systemd() {
 
 _postinst() {
   # creating zextras group if it isn't already there
-  getent group zextras >/dev/null \
-    || groupadd -r zextras
+  getent group zextras >/dev/null ||
+    groupadd -r zextras
   # creating zextras user if it isn't already there
-  getent passwd zextras >/dev/null \
-    || useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
+  getent passwd zextras >/dev/null ||
+    useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
 }
 
 _postinst_systemd() {
@@ -223,3 +223,4 @@ postrm__rocky_9() {
     systemctl daemon-reload &>/dev/null || :
   fi
 }
+
