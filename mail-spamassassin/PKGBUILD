@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="4"
+pkgrel="5"
 pkgdesc="Spam detector and markup engine"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -58,7 +58,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f'
-  'ba5d53441f35a96dedcfdf2625021f0148f9a1fc4c4a03c5d980b387c7d83261')
+  'db9cc39fad18e9ac4a9ed9443587bdf29a0ac9f6c8dbcb5a0b658e9f7c38d211')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
@@ -81,13 +81,16 @@ build() {
   # defaults to DEF_RULES_DIR=$PREFIX/share/spamassassin and
   # LOCAL_STATE_DIR=/var/opt/spamassassin, neither of which matches
   # /opt/zextras/data/spamassassin/rules -> "no rules were found" (CO-3849).
-  #   DATADIR         -> default rules dir (stock + sa-update'd .cf rules)
-  #   CONFDIR         -> local rules dir (.pre plugin config + local.cf)
-  #   LOCAL_STATE_DIR -> runtime sa-update state (<ver>/updates_spamassassin_org)
+  #   DATADIR       -> DEF_RULES_DIR  (default rules dir; stock + sa-update'd .cf)
+  #   CONFDIR       -> LOCAL_RULES_DIR (.pre plugin config + local.cf; gpg keydir)
+  #   LOCALSTATEDIR -> LOCAL_STATE_DIR (runtime sa-update <ver>/updates_spamassassin_org)
+  # NB: the input macro is LOCALSTATEDIR, not LOCAL_STATE_DIR — the latter is
+  # ignored by Makefile.PL, which then defaults to /var/opt/spamassassin (root-owned)
+  # for an /opt PREFIX, breaking sa-update writes as the zextras user.
   perl ${_perl_inc} Makefile.PL INSTALL_BASE=/opt/zextras/common \
     DATADIR=/opt/zextras/data/spamassassin/rules \
     CONFDIR=/opt/zextras/data/spamassassin/localrules \
-    LOCAL_STATE_DIR=/opt/zextras/data/spamassassin \
+    LOCALSTATEDIR=/opt/zextras/data/spamassassin/state \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   # build_rules requires rulesrc/ (not in CPAN tarball); no-op the target.
