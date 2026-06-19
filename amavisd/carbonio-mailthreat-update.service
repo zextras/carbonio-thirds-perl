@@ -25,8 +25,12 @@ fi'
 
 # Hardening
 PrivateTmp=yes
-ProtectSystem=strict
-ReadWritePaths=/opt/zextras/data /opt/zextras/log /opt/zextras/common/share/spamassassin
+#ProtectSystem=strict
+#ReadWritePaths=/opt/zextras/data /opt/zextras/log /opt/zextras/common/share/spamassassin
+ProtectSystem=yes
+ReadOnlyPaths=/usr
+ReadOnlyPaths=/boot
+ReadOnlyPaths=/efi
 NoNewPrivileges=yes
 PrivateDevices=yes
 ProtectHome=yes

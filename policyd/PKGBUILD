@@ -52,7 +52,7 @@ source=(
 sha256sums=(
   'SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  '011aa7265ca26a3853c60151c302e09f286a49ce1b1793d5246e4767682e6a97'
+  '577883d36b41da66463ef8f3d137361316de37f6448c9da56eda6ef7085a694f'
   '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa'
 )
 
@@ -100,11 +100,11 @@ _package_systemd() {
 
 _postinst() {
   # creating zextras group if it isn't already there
-  getent group zextras >/dev/null \
-    || groupadd -r zextras
+  getent group zextras >/dev/null ||
+    groupadd -r zextras
   # creating zextras user if it isn't already there
-  getent passwd zextras >/dev/null \
-    || useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
+  getent passwd zextras >/dev/null ||
+    useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
 }
 
 package() {
