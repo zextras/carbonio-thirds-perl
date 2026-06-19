@@ -1,6 +1,7 @@
+_revision="r1928015"
 pkgname="carbonio-spamassassin-rules"
-pkgver="1.0"
-pkgrel="4"
+pkgver="4.0.2"
+pkgrel="1"
 pkgdesc="Default ruleset for SpamAssassin"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -18,27 +19,40 @@ depends__yum=(
 section="libs"
 priority="important"
 
+# Official Apache SpamAssassin ruleset, pinned to the engine release.
+# Shipped as a source tarball instead of a build-time `sa-update` fetch: sa-update
+# is not guaranteed to be present in the build image (and needs network), which
+# silently produced EMPTY packages -> amavisd "no rules were found" Suicide.
+# Bump this revision together with carbonio-perl-mail-spamassassin (pkgver).
+# https://archive.apache.org/dist/spamassassin/source/
+source=(
+  "https://archive.apache.org/dist/spamassassin/source/Mail-SpamAssassin-rules-${pkgver}.${_revision}.tgz"
+)
+sha256sums=(
+  'f82128687117113dbe40bdc4e3141b87f96c2b01519c9022597da47e726a613e'
+)
+
 package() {
-  mkdir -p "${pkgdir}/opt/zextras/data/spamassassin/rules"
+  _rulesdir="${pkgdir}/opt/zextras/data/spamassassin/rules"
+  install -d "${_rulesdir}"
 
-  # sa-update loads XS modules; point PERL5LIB at the installed arch dir so it doesn't try to load target-arch .so files with the host perl.
-  _perl5lib="/opt/zextras/common/lib/perl5"
-  if [ -n "${CROSS_COMPILE}" ]; then
-    _perl5lib="/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi:${_perl5lib}"
+  # The tarball extracts into ${srcdir} (flat): *.cf rule files plus the TextCat
+  # "languages" data file. Copy via find so it works regardless of whether yap
+  # extracts flat or into a subdir. Skip user_prefs.template, sa-update-pubkey.txt
+  # and the STATISTICS-*.cf.txt score reports (not *.cf).
+  find "${srcdir}" -maxdepth 2 -type f -name '*.cf' \
+    -exec install -m644 {} "${_rulesdir}/" \;
+  _lang=$(find "${srcdir}" -maxdepth 2 -type f -name languages | head -n1)
+  if [ -n "${_lang}" ]; then
+    install -m644 "${_lang}" "${_rulesdir}/"
   fi
 
-  PERL5LIB="${_perl5lib}" \
-  /opt/zextras/common/bin/sa-update \
-    --nogpg \
-    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules" \
-    || echo "sa-update failed (no download tool or network — rules will be fetched on first boot)"
-
-  # Flatten the rules subdirectory (use find, not glob — handles empty dir).
-  _rules_subdir="${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org"
-  if [ -d "${_rules_subdir}" ] && [ -n "$(ls -A "${_rules_subdir}" 2>/dev/null)" ]; then
-    find "${_rules_subdir}" -maxdepth 1 -type f -exec cp {} \
-      "${pkgdir}/opt/zextras/data/spamassassin/rules/" \;
-    rm -rf "${_rules_subdir}" \
-      "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
+  # Never publish an empty ruleset (the engine reads these from
+  # DEF_RULES_DIR=/opt/zextras/data/spamassassin/rules).
+  _count=$(find "${_rulesdir}" -maxdepth 1 -name '*.cf' | wc -l)
+  if [ "${_count}" -eq 0 ]; then
+    echo "ERROR: no .cf rule files found in source tarball; refusing to build an empty package" >&2
+    exit 1
   fi
+  echo "Packaged ${_count} SpamAssassin rule file(s)"
 }
