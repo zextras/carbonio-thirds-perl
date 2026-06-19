@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Spam detector and markup engine"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -75,7 +75,19 @@ build() {
     _perl_inc="-I /opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi ${_perl_inc}"
   fi
 
+  # Align SpamAssassin's compiled rule/state dirs with Carbonio's layout so the
+  # engine reads the ruleset that carbonio-spamassassin-rules installs and so
+  # runtime sa-update writes to a discoverable location. Without these, SA
+  # defaults to DEF_RULES_DIR=$PREFIX/share/spamassassin and
+  # LOCAL_STATE_DIR=/var/opt/spamassassin, neither of which matches
+  # /opt/zextras/data/spamassassin/rules -> "no rules were found" (CO-3849).
+  #   DATADIR         -> default rules dir (stock + sa-update'd .cf rules)
+  #   CONFDIR         -> local rules dir (.pre plugin config + local.cf)
+  #   LOCAL_STATE_DIR -> runtime sa-update state (<ver>/updates_spamassassin_org)
   perl ${_perl_inc} Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    DATADIR=/opt/zextras/data/spamassassin/rules \
+    CONFDIR=/opt/zextras/data/spamassassin/localrules \
+    LOCAL_STATE_DIR=/opt/zextras/data/spamassassin \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   # build_rules requires rulesrc/ (not in CPAN tarball); no-op the target.
