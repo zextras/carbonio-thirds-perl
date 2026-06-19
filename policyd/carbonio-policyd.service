@@ -15,8 +15,9 @@ RestartSec=3s
 
 # Hardening
 PrivateTmp=yes
-ProtectSystem=strict
-ReadWritePaths=/opt/zextras/data/cbpolicyd
+#ProtectSystem=strict
+#ReadWritePaths=/opt/zextras/data/cbpolicyd
+ProtectSystem=yes
 NoNewPrivileges=yes
 PrivateDevices=yes
 ProtectHome=yes
