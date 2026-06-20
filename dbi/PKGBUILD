@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-dbi"
-pkgver="1.644" # renovate: datasource=cpan depName=DBI
+pkgver="1.648" # renovate: datasource=cpan depName=DBI
 pkgrel="2"
 pkgdesc="Database independent interface for Perl"
 arch=('aarch64' 'x86_64')
