@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-uri"
-pkgver="5.34" # renovate: datasource=cpan depName=URI
+pkgver="5.35" # renovate: datasource=cpan depName=URI
 pkgrel="1"
 pkgdesc="Uniform Resource Identifiers (absolute and relative)"
 arch=('aarch64' 'x86_64')
