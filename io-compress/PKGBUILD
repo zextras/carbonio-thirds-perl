@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-io-compress"
-pkgver="2.219" # renovate: datasource=cpan depName=IO::Compress
+pkgver="2.221" # renovate: datasource=cpan depName=IO::Compress
 pkgrel="1"
 pkgdesc="Low-Level Interface to compression libraries"
 arch=('aarch64' 'x86_64')
