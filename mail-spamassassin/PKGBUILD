@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="5"
+pkgrel="6"
 pkgdesc="Spam detector and markup engine"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -125,6 +125,16 @@ package() {
   rm -rf "${pkgdir}"/opt/zextras/common/data/spamassassin/rules \
     "${pkgdir}"/opt/zextras/data/spamassassin/rules/*
 
+  # Re-ship the SpamAssassin update-signing public key that the rm above strips.
+  # sa-update bootstraps its GPG keyring from DEF_RULES_DIR/sa-update-pubkey.txt
+  # (here /opt/zextras/data/spamassassin/rules); without it the keyring is empty
+  # and every official rule update fails GPG validation (the update is signed by
+  # subkey 24F434CE -> "GPG validation failed", sa-update exits 4). The ruleset
+  # .cf files are owned by carbonio-spamassassin-rules, which intentionally omits
+  # this key, so the engine package must provide it.
+  install -Dm644 "${srcdir}/Mail-SpamAssassin-${pkgver}/rules/sa-update-pubkey.txt" \
+    "${pkgdir}/opt/zextras/data/spamassassin/rules/sa-update-pubkey.txt"
+
   if [ -f "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre ]; then
     sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
       "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
@@ -141,4 +151,17 @@ package() {
 
 postinst() {
   systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-spamassassin.conf || :
+
+  # Bootstrap (or repair) the sa-update GPG keyring with the trusted SpamAssassin
+  # signing key. sa-update only auto-imports the default keyring when trustdb.gpg
+  # is absent, so an already-empty/stale keyring on an existing install would
+  # never recover on its own; import explicitly so upgrades fix it too. Runs as
+  # zextras (the sa-update service user) so the keyring ends up zextras-owned.
+  _sa_key="/opt/zextras/data/spamassassin/rules/sa-update-pubkey.txt"
+  _sa_keyring="/opt/zextras/data/spamassassin/localrules/sa-update-keys"
+  if command -v gpg >/dev/null 2>&1 && [ -f "${_sa_key}" ] && getent passwd zextras >/dev/null; then
+    install -d -o zextras -g zextras -m 0700 "${_sa_keyring}"
+    runuser -u zextras -- /opt/zextras/common/bin/sa-update \
+      --import "${_sa_key}" --gpghomedir "${_sa_keyring}" >/dev/null 2>&1 || :
+  fi
 }
