@@ -60,6 +60,12 @@ _package() {
   cd "${srcdir}/policyd"
   git reset --hard cf484f1b93cf9965886cc89d33bdeee9c26426cb
 
+  # The upstream awitpt submodule URL (gitlab.devlabs.linuxassist.net) is dead:
+  # the domain expired and now fails TLS. Redirect it to the working mirror on
+  # the same host that already serves policyd, then sync before fetching.
+  git submodule set-url awitpt "https://gitlab.linux.community/awit-frameworks/awit-perl-toolkit.git"
+  git submodule sync
+
   ./update-git-modules
   rm -rf .git awitpt/.git
   rm -rf awitpt/CPAN* awitpt/doxygen awitpt/SOAP
