@@ -1,7 +1,7 @@
 _revision="r1928015"
 pkgname="carbonio-spamassassin-rules"
 pkgver="4.0.2"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Default ruleset for SpamAssassin"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -36,16 +36,31 @@ package() {
   _rulesdir="${pkgdir}/opt/zextras/data/spamassassin/rules"
   install -d "${_rulesdir}"
 
-  # The tarball extracts into ${srcdir} (flat): *.cf rule files plus the TextCat
-  # "languages" data file. Copy via find so it works regardless of whether yap
-  # extracts flat or into a subdir. Skip user_prefs.template, sa-update-pubkey.txt
-  # and the STATISTICS-*.cf.txt score reports (not *.cf).
+  # The tarball extracts into ${srcdir} (flat): *.cf rule files, the TextCat
+  # "languages" data file, and sa-update-pubkey.txt (sa-update's signing key).
+  # Copy via find so it works regardless of whether yap extracts flat or into a
+  # subdir. Skip user_prefs.template and the STATISTICS-*.cf.txt score reports.
   find "${srcdir}" -maxdepth 2 -type f -name '*.cf' \
     -exec install -m644 {} "${_rulesdir}/" \;
   _lang=$(find "${srcdir}" -maxdepth 2 -type f -name languages | head -n1)
   if [ -n "${_lang}" ]; then
     install -m644 "${_lang}" "${_rulesdir}/"
   fi
+
+  # Ship sa-update's signing public key in DEF_RULES_DIR. sa-update bootstraps its
+  # GPG keyring from <DEF_RULES_DIR>/sa-update-pubkey.txt (the engine postinst then
+  # imports it); without it the keyring is empty and every official rule update
+  # fails GPG validation (signed by subkey 24F434CE -> sa-update exit 4). This path
+  # historically belonged to this package (the old sa-update build flow shipped it),
+  # so it must stay here: carbonio-perl-mail-spamassassin must NOT also ship it, or
+  # dpkg hits a file-overwrite conflict on upgrade against the installed
+  # carbonio-spamassassin-rules that still owns this path.
+  _pubkey=$(find "${srcdir}" -maxdepth 2 -type f -name sa-update-pubkey.txt | head -n1)
+  if [ -z "${_pubkey}" ]; then
+    echo "ERROR: sa-update-pubkey.txt not found in source tarball; refusing to ship a keyless ruleset" >&2
+    exit 1
+  fi
+  install -m644 "${_pubkey}" "${_rulesdir}/sa-update-pubkey.txt"
 
   # Never publish an empty ruleset (the engine reads these from
   # DEF_RULES_DIR=/opt/zextras/data/spamassassin/rules).
