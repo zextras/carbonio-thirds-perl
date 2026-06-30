@@ -124,3 +124,21 @@ diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
    }
  
    # deal with debugging early, based on a command line arg
+diff '--color=auto' -Naur a/lib/Amavis/Conf.pm b/lib/Amavis/Conf.pm
+--- a/lib/Amavis/Conf.pm	2026-01-09 18:17:30.329647054 +0100
++++ b/lib/Amavis/Conf.pm	2026-01-09 18:17:43.464845520 +0100
+@@ -273,6 +273,14 @@
+ use Errno qw(ENOENT EACCES EBADF);
+ 
+ use vars @EXPORT;
++
++# Carbonio: amavisd is started by zmamavisdctl as the non-root "zextras" user,
++# and its config lives in a writable, zextras-owned directory
++# (/opt/zextras/conf). amavis 2.14 refuses such a config unless this flag is
++# set. Setting it here (at module load, before any config file is read)
++# relaxes the config-file owner/writable and config-dir writable checks for
++# the Carbonio deployment layout.
++$i_know_what_i_am_doing{no_conf_file_writable_check} = 1;
+ 
+ sub c($); sub cr($); sub ca($); sub dkim_key($$$;@);  # prototypes
+ use subs qw(c cr ca dkim_key);  # access subroutines to config vars and keys
