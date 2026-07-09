@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
-pkgrel="3"
+pkgrel="4"
 pkgdesc="SAX2 Driver for Expat"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
