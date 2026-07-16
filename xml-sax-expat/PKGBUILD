@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
-pkgrel="4"
+pkgrel="5"
 pkgdesc="SAX2 Driver for Expat"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -48,14 +48,6 @@ build() {
 package() {
   cd "${srcdir}/XML-SAX-Expat-${pkgver}"
   make pure_install DESTDIR="${pkgdir}"
-
-  # Register XML::SAX::Expat (pure_install skips upstream's install_sax_expat hook).
-  _sax_ini="${pkgdir}/opt/zextras/common/lib/perl5/XML/SAX/ParserDetails.ini"
-  mkdir -p "$(dirname "${_sax_ini}")"
-  {
-    printf '[XML::SAX::Expat]\n'
-    printf 'http://xml.org/sax/features/namespaces = 1\n'
-  } >> "${_sax_ini}"
 
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
