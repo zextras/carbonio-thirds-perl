@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.14.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
-pkgrel="4"
+pkgrel="5"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
