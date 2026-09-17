@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-http-date"
-pkgver="6.06" # renovate: datasource=cpan depName=HTTP::Date
+pkgver="6.08" # renovate: datasource=cpan depName=HTTP::Date
 pkgrel="2"
 pkgdesc="HTTP::Date - date conversion routines"
 arch=('any')
