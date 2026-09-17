@@ -1,6 +1,6 @@
 pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
-pkgrel="6"
+pkgrel="7"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -52,7 +52,7 @@ source=(
 sha256sums=(
   'SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  '5d530c58a8e046c1000f352feb5b323c51498f2fc2214182b709a41e9149a617'
+  '48f4c6f18ba5d5d04ec0e3d4a1f68427fe67d8ca289e33e184b3f16bde805868'
   '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa'
 )
 

@@ -7,9 +7,11 @@ Wants=carbonio-configd.service
 [Service]
 User=zextras
 Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
-ExecStartPre=/bin/sh -c 'echo REWRITE amavis | netcat -w 120 localhost 7171; \
-  echo REWRITE antispam | netcat -w 120 localhost 7171; \
-  /opt/zextras/common/sbin/amavis-mc'
+# Ask configd to refresh our config. Non-fatal and bounded: zmconfigd accepts
+# several services per REWRITE, and a stalled configd must not keep amavisd
+# from starting (CO-4290). -w must stay well below TimeoutStartSec (90s).
+ExecStartPre=-/bin/sh -c 'echo REWRITE amavis antispam | netcat -w 30 localhost 7171'
+ExecStartPre=/opt/zextras/common/sbin/amavis-mc
 ExecStart=/opt/zextras/common/sbin/amavisd \
   -X no_conf_file_writable_check \
   -c /opt/zextras/conf/amavisd.conf foreground
