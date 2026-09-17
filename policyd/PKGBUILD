@@ -1,6 +1,6 @@
 pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
-pkgrel="6"
+pkgrel="7"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
