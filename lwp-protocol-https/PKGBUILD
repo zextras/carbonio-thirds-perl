@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-lwp-protocol-https"
-pkgver="6.15" # renovate: datasource=cpan depName=LWP::Protocol::https
+pkgver="6.17" # renovate: datasource=cpan depName=LWP::Protocol::https
 pkgrel="1"
 pkgdesc="Provide https support for LWP::UserAgent"
 arch=('any')
