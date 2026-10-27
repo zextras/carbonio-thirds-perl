@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-date-manip"
-pkgver="6.99" # renovate: datasource=cpan depName=Date::Manip
+pkgver="7.00" # renovate: datasource=cpan depName=Date::Manip
 pkgrel="1"
 pkgdesc="Date manipulation routines"
 arch=('any')
