@@ -54,6 +54,20 @@ pipeline {
             }
         }
 
+        stage('Publish docker images') {
+            steps {
+                dockerStage([
+                    dockerfile: 'docker/amavisd/Dockerfile',
+                    imageName: 'carbonio-amavisd',
+                    ocLabels: [
+                        title: 'Carbonio amavisd',
+                        descriptionFile: 'docker/amavisd/description.md',
+                    ],
+                    platforms: ['linux/amd64', 'linux/arm64'] as Set,
+                ])
+            }
+        }
+
         stage('Build deb/rpm') {
             steps {
                 echo 'Building deb/rpm packages'
