@@ -1,0 +1,55 @@
+use strict;
+
+$myhostname = '@@AMAVIS_HOSTNAME@@';
+$mydomain = '@@AMAVIS_DOMAIN@@';
+@local_domains_maps = ( 1 );
+
+$daemon_user = 'zextras';
+$daemon_group = 'zextras';
+$MYHOME = '/opt/zextras/data/amavisd';
+$TEMPBASE = "$MYHOME/tmp";
+$db_home = "$MYHOME/db";
+$helpers_home = "$MYHOME/var";
+$pid_file = "$MYHOME/var/amavisd.pid";
+$lock_file = "$MYHOME/var/amavisd.lock";
+
+$DO_SYSLOG = 0;
+$LOGFILE = undef;
+$log_level = @@AMAVIS_LOG_LEVEL@@;
+
+$max_servers = @@AMAVIS_MAX_SERVERS@@;
+$child_timeout = 8 * 60;
+
+$inet_socket_bind = '@@AMAVIS_LISTEN_ADDRESS@@';
+$inet_socket_port = @@AMAVIS_LISTEN_PORT@@;
+@inet_acl = qw( @@AMAVIS_INET_ACL@@ );
+
+$forward_method = 'smtp:[@@AMAVIS_FORWARD_HOST@@]:@@AMAVIS_FORWARD_PORT@@';
+$notify_method = $forward_method;
+
+@bypass_spam_checks_maps = ( 1 );
+$enable_dkim_verification = 0;
+$enable_dkim_signing = 0;
+
+$final_virus_destiny = @@AMAVIS_FINAL_VIRUS_DESTINY@@;
+$final_banned_destiny = D_PASS;
+$final_bad_header_destiny = D_PASS;
+$virus_admin = undef;
+$QUARANTINEDIR = undef;
+$virus_quarantine_method = undef;
+
+@av_scanners = (
+  ['ClamAV-remote-stream',
+    \&ask_daemon, [
+      "{}/*",
+      [
+        'clamd:@@CLAMD_ADDRESS@@'
+      ],
+    ],
+    qr/\bOK$/m, qr/\bFOUND$/m,
+    qr/^.*?: (?!Infected Archive)(.*) FOUND$/m
+  ],
+);
+@av_scanners_backup = ();
+
+1;
