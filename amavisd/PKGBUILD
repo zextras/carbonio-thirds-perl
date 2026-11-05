@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
-pkgver="2.14.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
-pkgrel="5"
+pkgver="2.15.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
+pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -63,7 +63,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  '6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
+  '8448a24b21cfe07337dc7c7c809c39adc79d58675d7f8e67a9af3735291b6626'
   '75e49615b5b8f320dd7c8e8d876484bd87f1d4ab3ee635664ea76faaf3913fbb'
   '16a4948b27ba74b953e4b0c13241b44736e85b64e757341daf965ec30d7bddd8'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
