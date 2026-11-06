@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-mime-tools"
-pkgver="5.517" # renovate: datasource=cpan depName=MIME::Tools
+pkgver="5.522" # renovate: datasource=cpan depName=MIME::Tools
 pkgrel="1"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
 arch=('any')
@@ -24,7 +24,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/D/DS/DSKOLL/MIME-tools-${pkgver}.tar.gz"
 )
-sha256sums=('e05f8e45d0895164b1fe53a0a8e725dd81e92191a29409e1b48c55f823b03483')
+sha256sums=('cd07b53d481d198696c02c62f034bc10468eab157440515de0025e80b0f4933f')
 
 build() {
   cd "${srcdir}/MIME-tools-${pkgver}"
