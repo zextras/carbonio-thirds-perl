@@ -4,7 +4,7 @@ ARG TARGETARCH
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates \
- && printf 'deb [arch=%s trusted=yes] https://repo.area51-zextras.com/devel/ubuntu jammy main\n' "${TARGETARCH}" \
+ && printf 'deb [arch=%s trusted=yes] https://repo.zextras.tools/repository/ubuntu-devel-jammy jammy main\n' "${TARGETARCH}" \
     > /etc/apt/sources.list.d/zextras.list \
  && apt-get update \
  && todo=carbonio-amavisd && carbonio_pkgs= \
