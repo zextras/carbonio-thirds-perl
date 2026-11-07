@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-socket"
-pkgver="2.040" # renovate: datasource=cpan depName=Socket
+pkgver="2.043" # renovate: datasource=cpan depName=Socket
 pkgrel="1"
 pkgdesc="Networking constants and support functions"
 arch=('aarch64' 'x86_64')
@@ -18,7 +18,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Socket-${pkgver}.tar.gz"
 )
-sha256sums=('be0102fdcea8d43f1b02ef2ef94345ac4bbc7b6c66ece2ddd1a3593d8371ba1b')
+sha256sums=('236aab8262e928d05be0bb0a68fae9e829913f9d3fa4bb6aebba9e30edb189ad')
 
 build() {
   cd "${srcdir}/Socket-${pkgver}"
