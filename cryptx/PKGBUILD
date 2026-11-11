@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-cryptx"
-pkgver="0.088" # renovate: datasource=cpan depName=CryptX
+pkgver="0.091" # renovate: datasource=cpan depName=CryptX
 pkgrel="1"
 pkgdesc="Cryptographic toolkit"
 arch=('aarch64' 'x86_64')
@@ -19,7 +19,7 @@ source=(
   "https://cpan.metacpan.org/authors/id/M/MI/MIK/CryptX-$pkgver.tar.gz"
 )
 
-sha256sums=('9149f8b742634566e981b9949fb7d9b3f41aef36ef04ece21b51cf35153c4940')
+sha256sums=('3a82d5cf786985e5de5339d1236ce4b27306db5e6b1ed5fa15038ded6d44859a')
 
 build() {
   cd "${srcdir}/CryptX-${pkgver}"
