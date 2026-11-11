@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spf"
-pkgver="2.9.0" # renovate: datasource=cpan depName=Mail::SPF
-pkgrel="3"
+pkgver="3.20261105" # renovate: datasource=cpan depName=Mail::SPF
+pkgrel="1"
 pkgdesc="An object-oriented implementation of Sender Policy Framework"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
