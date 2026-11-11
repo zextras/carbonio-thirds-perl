@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-config-inifiles"
-pkgver="3.000003" # renovate: datasource=cpan depName=Config::IniFiles
-pkgrel="3"
+pkgver="3.003000" # renovate: datasource=cpan depName=Config::IniFiles
+pkgrel="1"
 pkgdesc="A module for reading .ini-style configuration files."
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -18,7 +18,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Config-IniFiles-${pkgver}.tar.gz"
 )
-sha256sums=('3c457b65d98e5ff40bdb9cf814b0d5983eb0c53fb8696bda3ba035ad2acd6802')
+sha256sums=('4f6f8eb0c4efbc9398a0f1ef0c97fb7704eee4ccd90af1a31dda32854aa81164')
 
 build() {
   cd "${srcdir}/Config-IniFiles-${pkgver}"
