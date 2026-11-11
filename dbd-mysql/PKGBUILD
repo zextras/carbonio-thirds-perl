@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-dbd-mysql"
-pkgver="4.055" # renovate: datasource=cpan depName=DBD::mysql
+pkgver="5.014" # renovate: datasource=cpan depName=DBD::mysql
 pkgrel="1"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 arch=('aarch64' 'x86_64')
@@ -32,7 +32,7 @@ source=(
   "cross-mysql-config.patch"
   "devel-checklib-stub.pm"
 )
-sha256sums=('fada24c4d36bc289f6238f277467fa037f7cafe9a17b4c90fdc5a24a36db5cbc'
+sha256sums=('c5fee5207e6a340e59cfa67df211698271f7b4c885f740e52bb5c2c3a10df55c'
   'e9e61d4ec839309cec7afc7132cc57b729d7144e417ff7aa4cab736b2bb73fe0'
   '7ce5e39096d188ab1848d25474795e3a23c25173ded0515a959101cda582a396')
 
