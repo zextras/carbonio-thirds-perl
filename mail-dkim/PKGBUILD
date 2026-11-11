@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-mail-dkim"
-pkgver="1.20240923" # renovate: datasource=cpan depName=Mail::DKIM
+pkgver="1.20261105" # renovate: datasource=cpan depName=Mail::DKIM
 pkgrel="1"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
 arch=('aarch64' 'x86_64')
@@ -28,7 +28,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/MB/MBRADSHAW/Mail-DKIM-${pkgver}.tar.gz"
 )
-sha256sums=('45de46f5dc4d23bcb6ad6401759881dd43968eab20e73f6f79d9557467de20ee')
+sha256sums=('beae07db0f73bf7449474203bdb82d82929f86e3e056a425678d2d7531088e81')
 
 build() {
   cd "${srcdir}/Mail-DKIM-${pkgver}"
