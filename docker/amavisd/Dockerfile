@@ -1,4 +1,4 @@
-FROM docker.io/library/ubuntu:jammy
+FROM docker.io/library/ubuntu:resolute
 
 ARG TARGETARCH
 
