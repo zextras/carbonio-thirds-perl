@@ -7,11 +7,10 @@ Wants=carbonio-mailthreat.service
 [Service]
 User=zextras
 Type=oneshot
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStart=/bin/sh -c 'if [ "${antispam_enable_rule_updates}" = "true" ]; then \
+ExecStart=/opt/zextras/bin/configd exec -- /bin/sh -c 'if [ "$${antispam_enable_rule_updates}" = "true" ]; then \
   /opt/zextras/common/bin/sa-update -v --reallyallowplugins --refreshmirrors || true; \
 fi'
-ExecStart=/bin/sh -c 'if [ "${antispam_enable_rule_compilation}" = "true" ]; then \
+ExecStart=/opt/zextras/bin/configd exec -- /bin/sh -c 'if [ "$${antispam_enable_rule_compilation}" = "true" ]; then \
   if command -v gcc >/dev/null 2>&1; then \
     /opt/zextras/common/bin/sa-compile; \
   else \
@@ -19,7 +18,7 @@ ExecStart=/bin/sh -c 'if [ "${antispam_enable_rule_compilation}" = "true" ]; the
     exit 0; \
   fi; \
 fi'
-ExecStart=!/bin/sh -c 'if [ "${antispam_enable_restarts}" = "true" ]; then \
+ExecStart=!/opt/zextras/bin/configd exec -- /bin/sh -c 'if [ "$${antispam_enable_restarts}" = "true" ]; then \
   /usr/bin/systemctl -q --no-block try-restart carbonio-mailthreat.service; \
 fi'
 
