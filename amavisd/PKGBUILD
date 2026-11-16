@@ -1,12 +1,56 @@
 pkgname="carbonio-amavisd"
 pkgver="2.15.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
-pkgrel="1"
+pkgrel="2"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('GPL-2.0-or-later')
 depends=(
+  "carbonio-perl-archive-zip"
+  "carbonio-perl-berkeleydb"
+  "carbonio-perl-convert-tnef"
+  "carbonio-perl-convert-uulib"
+  "carbonio-perl-digest-sha1"
+  "carbonio-perl-file-libmagic"
+  "carbonio-perl-http-message"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-ip-country"
+  "carbonio-perl-libwww"
+  "carbonio-perl-lwp-protocol-https"
+  "carbonio-perl-mail-dkim"
+  "carbonio-perl-mailtools"
+  "carbonio-perl-mime-tools"
+  "carbonio-perl-net-libidn2"
+  "carbonio-perl-net-server"
+  "carbonio-perl-net-ssleay"
+  "carbonio-perl-unix-syslog"
+)
+depends__ubuntu_noble=(
+  "carbonio-configd>=1.13.0"
+  "carbonio-perl-archive-zip"
+  "carbonio-perl-berkeleydb"
+  "carbonio-perl-convert-tnef"
+  "carbonio-perl-convert-uulib"
+  "carbonio-perl-digest-sha1"
+  "carbonio-perl-file-libmagic"
+  "carbonio-perl-http-message"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-ip-country"
+  "carbonio-perl-libwww"
+  "carbonio-perl-lwp-protocol-https"
+  "carbonio-perl-mail-dkim"
+  "carbonio-perl-mailtools"
+  "carbonio-perl-mime-tools"
+  "carbonio-perl-net-libidn2"
+  "carbonio-perl-net-server"
+  "carbonio-perl-net-ssleay"
+  "carbonio-perl-unix-syslog"
+)
+depends__rocky_9=(
+  "carbonio-configd>=1.13.0"
   "carbonio-perl-archive-zip"
   "carbonio-perl-berkeleydb"
   "carbonio-perl-convert-tnef"
@@ -65,7 +109,7 @@ source=(
 sha256sums=(
   '8448a24b21cfe07337dc7c7c809c39adc79d58675d7f8e67a9af3735291b6626'
   '75e49615b5b8f320dd7c8e8d876484bd87f1d4ab3ee635664ea76faaf3913fbb'
-  '16a4948b27ba74b953e4b0c13241b44736e85b64e757341daf965ec30d7bddd8'
+  '9283fdbddd68bf2be843c662eb40857aca3203de3b31868c9d169bf75df33734'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
   '4c901881a50aa11cafc9496644cdf350818c40039222f65ebfd189b0d568653d'
   '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b'
