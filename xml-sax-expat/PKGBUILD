@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
-pkgrel="5"
+pkgrel="6"
 pkgdesc="SAX2 Driver for Expat"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -51,4 +51,21 @@ package() {
 
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
+}
+
+postinst() {
+  perl -I/opt/zextras/common/lib/perl5 -MXML::SAX \
+    -e 'XML::SAX->add_parser(q(XML::SAX::Expat))->save_parsers()' || :
+}
+
+postrm() {
+  # Only on removal, not on upgrade.
+  case "$1" in
+    remove | purge | 0)
+      if [ -f /opt/zextras/common/lib/perl5/XML/SAX.pm ]; then
+        perl -I/opt/zextras/common/lib/perl5 -MXML::SAX \
+          -e 'XML::SAX->remove_parser(q(XML::SAX::Expat))->save_parsers()' || :
+      fi
+      ;;
+  esac
 }
