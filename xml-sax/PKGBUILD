@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-sax"
 pkgver="1.02" # renovate: datasource=cpan depName=XML::SAX
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Simple API for XML"
 arch=('any')
 maintainer="Zextras <packages@zextras.com>"
@@ -38,4 +38,21 @@ package() {
     make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
+
+  # ParserDetails.ini is not created by 'make install' under DESTDIR; register
+  # the bundled PurePerl parser so XML::SAX does not warn about a missing file.
+  # The staged XML/SAX.pm must come first in @INC: save_parsers() writes next to
+  # the copy of SAX.pm that was loaded.
+  PERL5LIB=${pkgdir}/opt/zextras/common/lib/perl5:/opt/zextras/common/lib/perl5 \
+    perl -MXML::SAX -e 'XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()'
+  test -s "${pkgdir}/opt/zextras/common/lib/perl5/XML/SAX/ParserDetails.ini"
+}
+
+# Re-register the Expat driver (shipped by carbonio-perl-xml-sax-expat) when
+# this package is upgraded, since the upgrade rewrites ParserDetails.ini.
+postinst() {
+  if [ -f /opt/zextras/common/lib/perl5/XML/SAX/Expat.pm ]; then
+    perl -I/opt/zextras/common/lib/perl5 -MXML::SAX \
+      -e 'XML::SAX->add_parser(q(XML::SAX::Expat))->save_parsers()' || :
+  fi
 }
