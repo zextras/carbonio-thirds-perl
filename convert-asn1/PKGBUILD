@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-convert-asn1"
-pkgver="0.36" # renovate: datasource=cpan depName=Convert::ASN1
+pkgver="0.37" # renovate: datasource=cpan depName=Convert::ASN1
 pkgrel="1"
 pkgdesc="ASN.1 Encode/Decode library"
 arch=('any')
@@ -20,7 +20,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/T/TI/TIMLEGGE/Convert-ASN1-${pkgver}.tar.gz"
 )
-sha256sums=('50439aedff4b403f24c9373eefd3c25770e33a9190d93a331e7a744f8b4e7cd3')
+sha256sums=('012b90bbb931e049340a114dbc510f845309d9ca76cc6c4fad751d317b4bf0fa')
 
 build() {
   cd "${srcdir}/Convert-ASN1-${pkgver}"
