@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-bit-vector"
-pkgver="7.4" # renovate: datasource=cpan depName=Bit::Vector
-pkgrel="3"
+pkgver="7.5" # renovate: datasource=cpan depName=Bit::Vector
+pkgrel="1"
 pkgdesc="Efficient bit vector, set of integers and big int math library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
